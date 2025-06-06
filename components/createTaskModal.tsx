@@ -1,6 +1,9 @@
 import { Modal, View, Text, TextInput, Pressable } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import DatePicker from "react-native-date-picker";
+import DateTimePicker, {
+  DateType,
+  useDefaultStyles,
+} from "react-native-ui-datepicker";
 
 import InputTask from "./inputTask";
 
@@ -15,8 +18,9 @@ export default function CreateTaskModal({
   isVisible,
   onVisible,
 }: CreateTaskProps) {
+  const defaultStyles = useDefaultStyles();
   const [isDateModalOpen, setIsDateModalOpen] = useState(false);
-  const [date, setDate] = useState(new Date());
+  const [newDate, setNewDate] = useState<DateType>();
 
   const openModalHandler = () => {
     setIsDateModalOpen(true);
@@ -38,11 +42,13 @@ export default function CreateTaskModal({
             </View>
             <View className="flex flex-row justify-center items-center gap-2 mb-4 px-1">
               <View className="flex w-1/2">
-                <InputTask
-                  labelName="Date"
-                  placeholder="Pick Date"
-                  onPress={openModalHandler}
-                />
+                <Pressable onPress={openModalHandler}>
+                  <InputTask
+                    labelName="Date"
+                    placeholder="Pick Date"
+                    editable={false}
+                  />
+                </Pressable>
               </View>
               <View className="flex w-1/2">
                 <InputTask
@@ -73,8 +79,27 @@ export default function CreateTaskModal({
           </SafeAreaView>
         </View>
       </Modal>
-
-    
+      <Modal visible={isDateModalOpen} animationType="fade" transparent={true}>
+        <Pressable
+          className="flex-1 justify-center items-center bg-black/50 p-4"
+          onPress={() => setIsDateModalOpen(false)}
+        >
+          <View
+            className="w-full max-w-md bg-white rounded-xl p-4"
+            onStartShouldSetResponder={() => true} // blokuje zamykanie gdy klikniesz w picker
+          >
+            <DateTimePicker
+              mode="single"
+              date={newDate}
+              onChange={({ date }) => {
+                setNewDate(date);
+                setIsDateModalOpen(false);
+              }}
+              styles={defaultStyles}
+            />
+          </View>
+        </Pressable>
+      </Modal>
     </>
   );
 }

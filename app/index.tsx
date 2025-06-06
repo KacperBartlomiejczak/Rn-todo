@@ -1,11 +1,4 @@
-import {
-  Text,
-  View,
-  FlatList,
-  Modal,
-  Pressable,
-  TextInput,
-} from "react-native";
+import { Text, View, FlatList, Modal } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { allTasks } from "@/data/allTask";
@@ -14,7 +7,6 @@ import { getCategoryColor } from "@/utils/getCategoryColor";
 import HeaderView from "@/components/headerView";
 import AddTaskBtn from "@/components/addTaskBtn";
 import TaskCard from "@/components/taskCard";
-import InputTask from "@/components/inputTask";
 
 import { useState } from "react";
 import CreateTaskModal from "@/components/createTaskModal";
@@ -26,8 +18,8 @@ export default function Index() {
   };
 
   return (
-    <View>
-      <SafeAreaView className="relative h-full p-4">
+    <View className="flex-1 bg-white">
+      <SafeAreaView className="flex-1 relative p-4">
         <HeaderView />
         <AddTaskBtn onVisible={handleVisible} />
 
@@ -44,8 +36,8 @@ export default function Index() {
           keyExtractor={(item) => item.id.toString()}
           className="mt-5"
         />
-        <CreateTaskModal isVisible={isVisible} onVisible={handleVisible} />
       </SafeAreaView>
+      <CreateTaskModal isVisible={isVisible} onVisible={handleVisible} />
     </View>
   );
 }
